@@ -7,10 +7,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.internal.matchers.IsCollectionContaining.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class ForTests {
     @Test
@@ -21,14 +24,20 @@ public class ForTests {
     @Test
     @DisplayName("Проверка 2")
     public void test2() {
-        Assertions.assertNull(new Employee(1,"2","3","4",5));
+        String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
+        String fileName = "data.csv";
+        List<Employee> list = new ArrayList<>();
+        list = Main.parseCSV(columnMapping, fileName);
+        assertThat(list, MyMatcher.isOurList());
     }
     @Test
     @DisplayName("Проверка 3")
     public void test3() {
         String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
         String fileName = "data.csv";
-        Assertions.assertNotNull(Main.parseCSV(columnMapping, fileName));
+//        Assertions.assertNotNull(Main.parseCSV(columnMapping, fileName));
+        assertThat(Main.parseCSV(columnMapping, fileName),CoreMatchers.instanceOf(List.class));
+
     }
     @Test
     @DisplayName("Проверка вызова эксепшна")
