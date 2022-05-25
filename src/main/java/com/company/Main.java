@@ -55,7 +55,7 @@ public class Main {
     }
 
 
-    private static List<Employee> parseXML(String fileName) {
+    public static List<Employee> parseXML(String fileName) {
         List<Employee> result = new ArrayList<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;

@@ -17,31 +17,23 @@ import static org.hamcrest.Matchers.*;
 
 public class ForTests {
     @Test
-    @DisplayName("Проверка 1")
+    @DisplayName("Проверка создания класса")
     public void test1() {
         Assertions.assertNotNull(new Employee(1,"2","3","4",5));
     }
-    @Test
-    @DisplayName("Проверка 2")
-    public void test2() {
-        String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
-        String fileName = "data.csv";
-        List<Employee> list = new ArrayList<>();
-        list = Main.parseCSV(columnMapping, fileName);
-        assertThat(list, MyMatcher.isOurList());
-    }
-    @Test
-    @DisplayName("Проверка 3")
-    public void test3() {
-        String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
-        String fileName = "data.csv";
-//        Assertions.assertNotNull(Main.parseCSV(columnMapping, fileName));
-        assertThat(Main.parseCSV(columnMapping, fileName),CoreMatchers.instanceOf(List.class));
 
+    @Test
+    @DisplayName("Проверка parseXML")
+    public void test3() {
+        List<Employee> expectedList = new ArrayList<>();
+        expectedList.add(new Employee(1,"John","Smith","USA",25));
+        expectedList.add(new Employee(2,"Inav","Petrov","RU",23));
+
+        Assertions.assertEquals(expectedList, Main.parseXML("data.xml"),"Объекты не равны");
     }
+
     @Test
     @DisplayName("Проверка вызова эксепшна")
-//    @AfterEach
     public void test4() {
         Assertions.assertThrows(FileNotFoundException.class, () -> Main.writeJSON("", "k://zz.txt"));
     }
@@ -49,14 +41,26 @@ public class ForTests {
     @Test
     @DisplayName("Проверка JUnit + Hamcrest")
     public void test5() {
-//        List<String> list = List.of("hello", "netology", "world");
-//        assertThat(list, hasItems("hello", "netology"));
+        List<Employee> expectedList = new ArrayList<>();
+        expectedList.add(new Employee(1,"John","Smith","USA",25));
+        expectedList.add(new Employee(2,"Inav","Petrov","RU",23));
 
         String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
         String fileName = "data.csv";
-//        Assertions.assertNotNull(Main.parseCSV(columnMapping, fileName));
-        assertThat(Main.parseCSV(columnMapping, fileName),CoreMatchers.notNullValue());
+//        Assertions.assertEquals(expectedList,Main.parseCSV(columnMapping, fileName),"Объекты не равны");
+        assertThat(Main.parseCSV(columnMapping, fileName),CoreMatchers.is(expectedList));
+    }
 
+    @Test
+    @DisplayName("Проверка метода parseCSV (собственный матчер)")
+//  только для тренировки написания собственного матчера
+    public void test2() {
+        String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
+        String fileName = "data.csv";
+
+        List<Employee> list = new ArrayList<>();
+        list = Main.parseCSV(columnMapping, fileName);
+        assertThat(list, MyMatcher.isOurList());
     }
 
 }
